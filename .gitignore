@@ -35,4 +35,8 @@ Thumbs.db
 
 # Other files from your project
 # *.exe 
+<<<<<<< HEAD
 # *.msi
+=======
+# *.msi
+>>>>>>> cb18d294b9fd128f5df15a8e98c5c6b636f4e050
