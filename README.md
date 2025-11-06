@@ -111,3 +111,9 @@ The following sorting rules are bundled *inside* the `FileSorter.jar` file.
 
 # ... and more
 ```
+
+-----
+
+## Note
+
+Do not change the jar's name
