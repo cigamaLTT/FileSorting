@@ -6,7 +6,7 @@ This tool reads a set of internal rules (like `.pdf=Documents`) and moves files 
 
 ## 🚀 Download & Requirements
 
-  * **Download:** You can download the latest `FileSorter.jar` file from the [**Releases Page**](https://https://github.com/cigamaLTT/FileSorting/releases).
+  * **Download:** You can download the latest `FileSorter.jar` file from the [**Releases Page**](https://github.com/cigamaLTT/FileSorting/releases/tag/v1.0).
   * **Requirements:** You only need the **Java Runtime Environment (JRE) 11** or newer to run this program. You can download it [here](https://www.java.com/en/download/).
 
 -----
