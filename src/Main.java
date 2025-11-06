@@ -37,6 +37,7 @@ public class Main {
         try(DirectoryStream<Path> stream = Files.newDirectoryStream(willBeSortFolder)){
             for(Path entry: stream){
                 if(Files.isDirectory(entry)) continue;
+                if(entry.getFileName().toString().equals("FileSorter.jar")) continue;
                 String targetFolder = rule.getFolderFromExtension(getFileExtension(entry));
                 if(targetFolder == null || targetFolder == "") continue;
                 Path targetPath = targetFolderAfterSort.resolve(targetFolder);
