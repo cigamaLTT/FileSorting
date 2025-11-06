@@ -6,9 +6,22 @@ import java.nio.file.Paths;
 
 public class Main {
     public static void main(String[] args) {
-        String userHome = System.getProperty("user.home");
-        Path willBeSortFolder = Paths.get(userHome, "Downloads");
-        Path targetFolderAfterSort = Paths.get(userHome, "Downloads");
+        Path willBeSortFolder;
+        Path targetFolderAfterSort;
+
+        if (args.length == 0) {
+            String currentDirectory = System.getProperty("user.dir");
+            willBeSortFolder = Paths.get(currentDirectory);
+            targetFolderAfterSort = Paths.get(currentDirectory);
+
+        } else if (args.length == 2) {
+            willBeSortFolder = Paths.get(args[0]);
+            targetFolderAfterSort = Paths.get(args[1]);
+
+        } else {
+            System.err.println("Error: Missing arguments.");
+            return;
+        }
 
         RuleLoader rule = new RuleLoader();
 
@@ -25,7 +38,7 @@ public class Main {
             for(Path entry: stream){
                 if(Files.isDirectory(entry)) continue;
                 String targetFolder = rule.getFolderFromExtension(getFileExtension(entry));
-                if(targetFolder == null) continue;
+                if(targetFolder == null || targetFolder == "") continue;
                 Path targetPath = targetFolderAfterSort.resolve(targetFolder);
                 moveFile(entry, targetPath);
             }
