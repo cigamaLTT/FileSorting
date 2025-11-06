@@ -1,4 +1,4 @@
-# 🗂️ Java File Sorter
+# 🗂️ File Sorter
 
 A simple, fast, command-line utility written in Java that automatically organizes files in a directory based on their extensions.
 
