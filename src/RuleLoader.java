@@ -1,5 +1,5 @@
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class RuleLoader {
@@ -9,11 +9,19 @@ public class RuleLoader {
     public RuleLoader() {
         rules = new Properties();
         try {
-            try (FileInputStream fis = new FileInputStream("src/rules.properties")) {
-                rules.load(fis);
+            InputStream input = RuleLoader.class.getClassLoader().getResourceAsStream("rules.properties");
+
+            if (input == null) {
+                System.err.println("Error: Cannot find 'rules.properties' in Classpath. Check if file is in SRC folder.");
+                return;
             }
+            try (InputStream safeInput = input) {
+                rules.load(safeInput);
+            }
+
         } catch (IOException e) {
-            System.err.println("Error: Properties not Found");
+            System.err.println("Error reading rules.properties file.");
+            e.printStackTrace();
         }
     }
 
