@@ -1,3 +1,5 @@
+package com.filesorter.config;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -9,7 +11,7 @@ public class RuleLoader {
     public RuleLoader() {
         rules = new Properties();
         try {
-            InputStream input = RuleLoader.class.getClassLoader().getResourceAsStream("rules.properties");
+            InputStream input = RuleLoader.class.getClassLoader().getResourceAsStream("com/filesorter/config/rules.properties");
 
             if (input == null) {
                 System.err.println("Error: Cannot find 'rules.properties' in Classpath. Check if file is in SRC folder.");

@@ -1,64 +1,72 @@
-# 🗂️ File Sorter
+# 🗂️ File Sorter 
 
-A simple, fast, command-line utility written in Java that automatically organizes files in a directory based on their extensions.
+A stateful, command-line utility written in Java that automatically organizes files from a source directory into a new target directory based on their extensions.
 
-This tool reads a set of internal rules (like `.pdf=Documents`) and moves files into their corresponding subfolders.
+This tool is built to be a robust, real-world application. It reads internal sorting rules (e.g., `.pdf=Documents`), handles file name conflicts, and most importantly, **tracks every file it moves** in a persistent "manifest" file (`manifest.json`).
 
-## 🚀 Download & Requirements
+This stateful design (using Gson for JSON persistence) lays the groundwork for advanced features like sorting by different methods (date, size) and future "Undo" functionality.
 
-  * **Download:** You can download the latest `FileSorter.jar` file from the [**Releases Page**](https://github.com/cigamaLTT/FileSorting/releases/tag/v1.0).
-  * **Requirements:** You only need the **Java Runtime Environment (JRE) 11** or newer to run this program. You can download it [here](https://www.java.com/en/download/).
+## 🚀 Features
 
------
+  * **Rule-Based Sorting:** Sorts files using an internal, customizable `rules.properties` file.
+  * **Safe Conflict Handling:** Automatically renames files if a file with the same name already exists in the target directory (e.g., `file (1).txt`, `file (2).txt`).
+  * **State Management:** Creates a `manifest.json` file in the user's home directory (`.filesorter/manifest.json`). This log tracks the "before" and "after" path of every file moved, allowing for future "un-sorting" or "re-sorting" operations.
+  * **Clean Architecture (OOP):** The source code is professionally refactored into distinct packages:
+      * `com.filesorter.core` (The main `SortEngine`)
+      * `com.filesorter.config` (Manages `RuleLoader` and `ManifestManager`)
+      * `com.filesorter.util` (Contains `FileUtils` for helper methods)
+  * **Safe Execution:** The program intelligently skips itself (e.g., `FileSorter.jar`) if it's run inside the source directory.
 
-## How to Use
+## 🖥️ Requirements
 
-After downloading `FileSorter.jar`, open your Terminal (PowerShell, CMD, or bash).
-
-You can run the program in two ways:
-
-### Option 1: Sort In-Place (Recommended)
-
-This is the most convenient way. The program will sort the files in the same directory where you run the command.
-
-1.  **Pro-tip:** Copy `FileSorter.jar` directly into the folder you want to clean up (e.g., your `Downloads` folder).
-2.  Open your Terminal in that folder.
-3.  Run the command:
-    ```bash
-    java -jar FileSorter.jar
-    ```
-    *(The program will find all files in that folder and move them into sub-folders like `Images`, `Videos`, etc.)*
-
-### Option 2: Specify Source and Target Directories
-
-You can explicitly tell the program which folder to sort and where to put the sorted files.
-
-  * **Syntax:**
-
-    ```bash
-    java -jar "path\to\FileSorter.jar" "SOURCE_DIRECTORY" "TARGET_DIRECTORY"
-    ```
-
-  * **Example:**
-    Let's say you downloaded the file to `C:\Tools\FileSorter.jar` and you want to sort your `Desktop`.
-
-    ```bash
-    java -jar "C:\Tools\FileSorter.jar" "C:\Users\YourName\Desktop\Unsorted" "C:\Users\YourName\Desktop\SortedFiles"
-    ```
+  * **Download:** You can download the latest `FileSorter.jar` file from the [**Releases Page**](https://www.google.com/search?q=https://github.com/cigamaLTT/FileSorting/releases).
+  * **Java:** You **must** have **Java Runtime Environment (JRE) 17 (LTS)** or newer to run this program.
+  * **Library:** The `Gson` (JSON) library is already **embedded** inside the `.jar` file (built as a Fat Jar).
 
 -----
 
-## Features
+## 📖 How to Use
 
-  * **Automated Sorting:** Moves files into designated folders based on built-in rules.
-  * **In-Place Sorting:** Run without arguments to sort the current directory.
-  * **Conflict Handling:** Automatically renames files if a file with the same name already exists in the target directory (e.g., `file (1).txt`, `file (2).txt`).
+This is a command-line (CLI) tool that requires **two arguments** to function: a Source directory and a Target directory.
 
-## Default Rules
+### Syntax
 
-The following sorting rules are bundled *inside* the `FileSorter.jar` file.
+Open your Terminal (PowerShell, CMD, or bash) and use the following syntax:
 
-*(Currently, changing these rules requires modifying the source code and building a new `.jar` file. The `rules.properties` file is not read from the outside).*
+```bash
+java -jar "path/to/FileSorter.jar" "SOURCE_DIRECTORY" "TARGET_DIRECTORY"
+```
+
+  * **`SOURCE_DIRECTORY`**: The folder you want to clean up (e.g., `C:\Users\YourName\Downloads`).
+  * **`TARGET_DIRECTORY`**: The folder where you want the sorted subfolders to be created (e.g., `D:\SortedFiles`).
+
+### Example
+
+Let's say you downloaded `FileSorter.jar` to `C:\Tools\` and you want to clean up your `Downloads` folder and put the results in `D:\Archive`.
+
+```bash
+java -jar "C:\Tools\FileSorter.jar" "C:\Users\YourName\Downloads" "D:\Archive"
+```
+
+The program will scan the `Downloads` folder and create subfolders (like `D:\Archive\Images`, `D:\Archive\Documents`, etc.) based on the rules, while logging every move to the manifest.
+
+*(**Note:** Running the .jar without arguments will default to sorting the current directory into itself, which is also supported).*
+
+-----
+
+## 🛠️ Technology Stack
+
+  * **Language:** Java 17 (LTS)
+  * **File Operations:** Java NIO.2 (`Path`, `Files`, `DirectoryStream`)
+  * **Configuration:** `java.util.Properties` (to read `rules.properties` from *inside* the `.jar`)
+  * **Data Persistence:** **Gson** (for reading/writing the `manifest.json`)
+  * **Design:** OOP (Refactored into `core`, `config`, and `util` packages)
+
+## 📜 Default Rules
+
+The following sorting rules are **bundled (internal)** *inside* the `FileSorter.jar` (from the `rules.properties` file in `src/com/filesorter/config/`).
+
+*(Currently, changing these rules requires modifying the `rules.properties` file in the source code and building a new `.jar` file).*
 
 ```properties
 # === BUILT-IN RULES ===
@@ -68,52 +76,13 @@ The following sorting rules are bundled *inside* the `FileSorter.jar` file.
 .docx=Documents
 .doc=Documents
 .txt=TextFiles
-.odt=Documents
-.rtf=Documents
-.md=Documents
-.epub=Ebooks
-.mobi=Ebooks
+# ... etc
 
 # --- Images ---
 .jpg=Images
 .jpeg=Images
 .png=Images
-.gif=Images
-.bmp=Images
-.svg=Images
-.webp=Images
-.heic=Images
-.psd=Photoshop
+# ... etc
 
-# --- Audio ---
-.mp3=Audio
-.m4a=Audio
-.wav=Audio
-.flac=Audio
-.aac=Audio
-.ogg=Audio
-
-# --- Video ---
-.mp4=Videos
-.mov=Videos
-.avi=Videos
-.mkv=Videos
-.wmv=Videos
-.webm=Videos
-
-# --- Archives ---
-.zip=Archives
-.rar=Archives
-.7z=Archives
-.tar=Archives
-.gz=Archives
-.iso=Archives
-
-# ... and more
+# ... (and many more)
 ```
-
------
-
-## Note
-
-Do not change the jar's name

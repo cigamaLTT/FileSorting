@@ -29,6 +29,13 @@ replay_pid*
 out/
 /target/
 
+# Eclipse
+.metadata/
+.settings/
+.classpath
+.project
+/bin/
+
 # OS generated files
 .DS_Store
 Thumbs.db
