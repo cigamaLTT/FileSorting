@@ -34,10 +34,10 @@ public class Main {
         }
 
         //For debug only, will remove right before making this a jar file
-        String userHome = System.getProperty("user.home");
-        willBeSortFolder = Paths.get(userHome, "Downloads");
-        targetFolderAfterSort = Paths.get(userHome, "Downloads");
-        sortMethod = "BY_EXTENSION";
+        //String userHome = System.getProperty("user.home");
+        //willBeSortFolder = Paths.get(userHome, "Downloads");
+        //targetFolderAfterSort = Paths.get(userHome, "Downloads");
+        //sortMethod = "BY_EXTENSION";
 
         SortEngine engine = new SortEngine();
         engine.startSorting(willBeSortFolder, targetFolderAfterSort, sortMethod);
